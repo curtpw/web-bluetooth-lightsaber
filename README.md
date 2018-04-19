@@ -1,6 +1,6 @@
 Go back to the [Web Bluetooth Accelerometer Controlled WebGL Lighsaber Tutorial](https://hackaday.io/project/144350-hack-a-35-nrf52832-arm-cortex-activity-tracker) on Hackaday
 =============================
-Go back to the [Web Bluetooth 3D Lightsaber Live Site](https://curtpw.github.io/web-bluetooth-lightsaber/)
+Go to the [Web Bluetooth 3D Lightsaber Live Site](https://curtpw.github.io/web-bluetooth-lightsaber/)
 =============================
 Control a WebGL 3D Lightsaber in a website using accelerometer data streaming over Web Bluetooth from a hacked X9 Pro Nordic nRF52832 based activity tracker. Under development.
 
