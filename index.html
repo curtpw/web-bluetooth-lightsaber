@@ -1,47 +1,13 @@
 <!DOCTYPE html>
-<!--
-Description:
-
-	Simple app for setting gesture targets on gesture detection and feedback wearable device. Based on example for creating a custom GATT encoding with mbed BLE device.
-
-Requirements:
-
-	An mbed enabled BLE platform running the code from:
-	http://developer.mbed.org/teams/Bluetooth-Low-Energy/code/BLE_GATT_Example/
-
-Credits:
-
-	ARM mbed [-_-]~
-
-	http://mbed.org
--->
 <html>
-
 <head>
 
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, user-scalable=no,
 		shrink-to-fit=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
 
-	<title>CMI Wearable Device Manager</title>
-
-
-
-	<script>
-	// Redirect console.log to Evothings Workbench.
-	if (window.hyper && window.hyper.log) { console.log = hyper.log }
-	</script>
-
-<!--	<script src="cordova.js"></script>  -->
-<!--	<script src="libs/jquery/jquery.js"></script> -->
-<!--	<script src="libs/evothings/evothings.js"></script>
-	<script src="libs/evothings/ui/ui.js"></script>
-	<script src="libs/evothings/easyble/easyble.js"></script>
-	<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.32.min.js"></script>
-    <script src="aws-lib.js"></script>
-    <script src="aws-config.js"></script> --> 
 	<script src="app.js"></script>
-		<title>WebGL Lightsaber</title>
+		<title>Lightsaber Controlled By Wearable Accelerometer</title>
 		<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
 		<link rel="shortcut icon" type="image/x-icon" href="demos/lightsaber/favicon.ico" />
 
@@ -194,6 +160,20 @@ Credits:
 			z-index: 2;
 			opacity: 0.5;
 		}
+		#pitch-display, #roll-display{
+			padding: 10px;
+		    font-size: 26px;
+		    color: white;
+		    font-weight: 500;
+		    display: inline-block;
+    		box-sizing: border-box;
+    		font-family: 'Proxima Nova Black';
+        	text-transform: uppercase;
+        	position:absolute;
+		}
+		#roll-display{
+			left: 200px;
+		}
 		#bluetooth-control{
 			position:absolute;
 			bottom: 3.5%;
@@ -286,15 +266,12 @@ Credits:
 		<script type="text/javascript" src="jedi/texture.js"></script>
 		<script type="text/javascript" src="jedi/material.js"></script>
 		<script type="text/javascript" src="jedi/model3d.js"></script>  <!--  Light Saber Model -->
-	<!--	<script type="text/javascript" src="jedi/model3d2.js"></script> -->   <!-- arm model -->
 		<script type="text/javascript" src="jedi/framebuffer.js"></script>
 		<script type="text/javascript" src="jedi/resource_manager.js"></script>  
-	<!--	<script type="text/javascript" src="jedi/resource_manager2.js"></script> -->
 		<script type="text/javascript" src="jedi/glow_effect.js"></script>
 		<script type="text/javascript" src="jedi/polyboard.js"></script>
 
 		<!-- External modules: Demo source -->
-	<!--	<script type="text/javascript" src="demos/lightsaber/lightsaber2.js"></script> -->
 		<script type="text/javascript" src="demos/lightsaber/lightsaber.js"></script> 
 
 		<!-- Application entry points: -->
@@ -454,7 +431,10 @@ Credits:
 	<!-- WebGL canvas and loading animation overlay: -->
 	<div id="page_body">
 
-		<div id="header"></div>
+		<div id="header">
+			<div id="pitch-display">Pitch:<span></span></div>
+			<div id="roll-display">Roll:<span></span></div>
+		</div>
 
 		<div>
 		<!-- 	<canvas id="webgl_canvas" width="640" height="480"></canvas> -->
@@ -470,43 +450,12 @@ Credits:
 			<p id="info">Not Connected</p>
 			<input id="deviceName" value="ChildMind" type="text" style="display:none;"/>
 
-			<button id="connectButton" class="blue" onclick="app.onConnectButton()">Connect</button>
-			<button id="forceButton" class="blue" onclick="app.onDeadReckon()">Dead Reckon</button>
+			<button id="connectButton" class="blue" onclick="app.onConnectButton()">Web Bluetooth Connect</button>
+			<button id="forceButton" class="blue" onclick="app.onDeadReckon()">Activate Controll</button>
 
 		</div>
 
-	<!--	<h2>Data</h2> -->
-		<div id="dataValues">
-			<div class="senseVal rollVal" style="color:#ffffff;"></div>
-			<div class="senseVal pitchVal" style="color:#808080;"></div>
-			<div class="senseVal proximityVal" style="color:#00f;"></div>
-			<div class="senseVal thermo1Val" style="color:#855723;"></div>
-			<div class="senseVal thermo2Val" style="color:#b99c6b;"></div>
-			<div class="senseVal thermo3Val" style="color:#8f3b1b;"></div>
-			<div class="senseVal thermo4Val" style="color:#d57500;"></div>
-		</div>
-	<!--
-		<button id="targetButton" class="green" onclick="app.onTargetButton()">
-			Set Target
-		</button>
 
-		<button id="numTargets">
-			0 Targets
-		</button>
-
-		<button id="clearButton" class="red" onclick="app.onClearButton()">
-			Clear
-		</button>
-		<button id="alphaButton" class="green" onclick="app.onVarButton(1)">
-			<span>var</span> &#945;
-		</button>
-		<button id="betaButton" class="green" onclick="app.onVarButton(2)">
-			<span>var</span> &beta;
-		</button>
-		</div>
-	-->
-
-	<!--	<p id="info">Not Connected</p> -->
 	</div>
 
 	<!-- Sound effects: -->
@@ -515,54 +464,6 @@ Credits:
 	<audio id="snd_saber_move" src="demos/lightsaber/sounds/saber_move.mp3" preload="auto"></audio>
 	<audio id="snd_saber_loop" src="demos/lightsaber/sounds/saber_loop.mp3" preload="auto" loop="loop"></audio>
 
-		<!-- jQuery UI panel: -->
-	<!--	<div id="controls"> -->
-		<!--	<button id="turn_on_button">Saber On</button>
-			<br />
-			<button id="turn_off_button">Saber Off</button>
-			<br />
--->
-	<!--		<form action="#">
-			<fieldset>
-			<select name="color_selector" id="color_selector">
-				<option>Blue</option>
-				<option>Green</option>
-				<option>Red</option>
-				<option>Cyan</option>
-				<option>Magenta</option>
-				<option>Yellow</option>
-			</select>
-			</fieldset>
-			</form> -->
-<!--
-			<div id="toggleables1">
-				<input type="checkbox" id="enable_glow_button" checked="checked">
-				<label for="enable_glow_button">Glow</label>
-
-				<input type="checkbox" id="enable_trail_button" checked="checked">
-				<label for="enable_trail_button">Trail</label>
-			</div>
-			<div id="toggleables2">
-				<input type="checkbox" id="enable_fxaa_button" checked="checked">
-				<label for="enable_fxaa_button">FXAA</label>
-
-				<input type="checkbox" id="enable_sound_button" checked="checked">
-				<label for="enable_sound_button">Sound</label>
-			</div>
-		</div>
--->
-<!--
-	<h2>Data</h2>
-	<div id="dataValues">
-		<div class="senseVal rollVal" style="color:#202020;"></div>
-		<div class="senseVal pitchVal" style="color:#808080;"></div>
-		<div class="senseVal proximityVal" style="color:#00f;"></div>
-		<div class="senseVal thermo1Val" style="color:#855723;"></div>
-		<div class="senseVal thermo2Val" style="color:#b99c6b;"></div>
-		<div class="senseVal thermo3Val" style="color:#8f3b1b;"></div>
-		<div class="senseVal thermo4Val" style="color:#d57500;"></div>
-	</div>
--->
 	</body>
 
 </html>
