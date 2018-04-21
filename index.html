@@ -156,6 +156,16 @@
     .pitch-key{ background-color: rgb(128, 128, 128); }
     .roll-key{ background-color: rgb(240, 240, 240); }
     .photosensor-key{ background-color: rgb(206, 66, 244); }
+
+    #basic-interface-container{
+    	position: absolute;
+	    bottom: 0;
+	}
+	#canvas_overlay{
+		position: absolute;
+		bottom: -2%;
+		left: 15%;
+	}
     </style>
 
 </head>
@@ -261,7 +271,7 @@
         if (canvas) {
       //    canvas.width  = window.innerWidth  * 0.6;
           canvas.width  = window.innerWidth  * 0.97;
-          canvas.height = window.innerHeight * 0.97;
+          canvas.height = window.innerHeight * 0.85;
           $("#webgl_canvas").show();
         }
 
