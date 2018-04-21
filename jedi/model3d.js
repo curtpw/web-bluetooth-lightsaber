@@ -55,7 +55,7 @@ jedi.Mesh3D class:
 ===========================================================
 */
 jedi.Mesh3D = function (firstVert, vertCount, firstIdx, idxCount, material, meshName) {
-	console.log("model3d.js --> jedi.Mesh3D = function (");
+//	console.log("model3d.js --> jedi.Mesh3D = function (");
 	// First index in its parent Vertex Buffer
 	// and number of vertexes this mesh uses.
 	this.firstVertex = firstVert || 0;
@@ -171,7 +171,7 @@ jedi.Model3D.VERT_OFFSET_COLOR     = (3 * 4) + (3 * 4) + (3 * 4) + (3 * 4) + (2 
 
 jedi.Model3D.prototype.initWithData = function (vertexArray, indexArray, meshArray,
                                                 deriveTangents, modelName, storageHint) { // -> bool
-console.log("model3d.js --> jedi.Model3D.prototype.initWithData = function (");
+//console.log("model3d.js --> jedi.Model3D.prototype.initWithData = function (");
 		//Curt add
 	//if(modelName == "arm"){ console.log("arm in model3d1!"); return false; }
 
@@ -244,7 +244,7 @@ console.log("model3d.js --> jedi.Model3D.prototype.initWithData = function (");
 
 jedi.Model3D.prototype.initAsyncFromFile = function (filename, completionCallback,
                                                      deriveTangents, modelName, storageHint) { // -> bool
-console.log("model3d.js --> jedi.Model3D.prototype.initAsyncFromFile = function (");
+//console.log("model3d.js --> jedi.Model3D.prototype.initAsyncFromFile = function (");
 		//Curt add
 //	if(modelName == "arm"){ console.log("arm in model3d1!"); return false; }
 
@@ -311,7 +311,7 @@ console.log("model3d.js --> jedi.Model3D.prototype.initAsyncFromFile = function 
 };
 
 jedi.Model3D.getDefault = function () { // -> jedi.Model3D
-	console.log("model3d.js --> jedi.Model3D.getDefault = function () {");
+//	console.log("model3d.js --> jedi.Model3D.getDefault = function () {");
 
 	if (jedi.Model3D.DEFAULT_3D_MODEL) {
 		return jedi.Model3D.DEFAULT_3D_MODEL;
@@ -328,7 +328,7 @@ jedi.Model3D.getDefault = function () { // -> jedi.Model3D
 };
 
 jedi.Model3D.prototype.updateGpuBuffers = function () { // -> void
-	console.log("model3d.js --> jedi.Model3D.prototype.updateGpuBuffers = function () {");
+//	console.log("model3d.js --> jedi.Model3D.prototype.updateGpuBuffers = function () {");
 	// VBO:
 	if (this.detail.webGLVbo && this.hasVertexes()) {
 		this.detail.gl.bindBuffer(this.detail.gl.ARRAY_BUFFER, this.detail.webGLVbo);
@@ -347,7 +347,7 @@ jedi.Model3D.prototype.updateGpuBuffers = function () { // -> void
 };
 
 jedi.Model3D.prototype.dispose = function () { // -> void
-	console.log("model3d.js --> jedi.Model3D.prototype.dispose = function () {");
+//	console.log("model3d.js --> jedi.Model3D.prototype.dispose = function () {");
 	// Make sure buffer bindings are clear first:
 	this.detail.gl.bindBuffer(this.detail.gl.ARRAY_BUFFER, null);
 	this.detail.gl.bindBuffer(this.detail.gl.ELEMENT_ARRAY_BUFFER, null);
@@ -375,7 +375,7 @@ jedi.Model3D.prototype.dispose = function () { // -> void
 };
 
 jedi.Model3D.prototype.deriveNormalsAndTangents = function () { // -> void
-	console.log("model3d.js --> jedi.Model3D.prototype.deriveNormalsAndTangents = function () {");
+//	console.log("model3d.js --> jedi.Model3D.prototype.deriveNormalsAndTangents = function () {");
 	jedi.assert(this.hasVertexes(), "Model has no vertexes!");
 
 	//
@@ -621,7 +621,7 @@ jedi.Model3D.prototype.deriveNormalsAndTangents = function () { // -> void
 };
 
 jedi.Model3D.prototype.addDebugTangentBasis = function (scale) { // -> void
-	console.log("model3d.js --> jedi.Model3D.prototype.addDebugTangentBasis = function (");
+//	console.log("model3d.js --> jedi.Model3D.prototype.addDebugTangentBasis = function (");
 	if (!this.hasVertexes()) {
 		return;
 	}
@@ -764,7 +764,7 @@ jedi.Model3D.prototype.drawMesh = function (mesh, materialOverride) { // -> void
 };
 
 jedi.Model3D.prototype.drawModel = function (meshPredicate, materialOverride) { // -> void
-	console.log("model3d.js --> jedi.Model3D.prototype.drawModel = function ( ");
+//	console.log("model3d.js --> jedi.Model3D.prototype.drawModel = function ( ");
 	if (!this.hasMeshes()) {
 		return;
 	}
@@ -988,7 +988,7 @@ jedi.Model3D.getImporterForFormat = function (extension) { // -> function()
  * No normals or UVs are outputted in the RAW format. Vertex color is fixed to white.
  */
 jedi.Model3D.importRAW = function (model, modelFileContents, deriveTangents, modelName, storageHint) { // -> bool
-	console.log("model3d.js --> jedi.Model3D.importRAW = function ( ");
+//	console.log("model3d.js --> jedi.Model3D.importRAW = function ( ");
 			//Curt add
 	//if(modelName == "arm"){ console.log("arm in model3d1!"); return false; }
 
@@ -1068,7 +1068,7 @@ jedi.Model3D.importRAW = function (model, modelFileContents, deriveTangents, mod
  * Vertex color is fixed to white. No UVs are read in. Per-vertex normal will be read if available.
  */
 jedi.Model3D.importJSON = function (model, modelFileContents, deriveTangents, modelName, storageHint) { // -> bool
-	console.log("model3d.js --> jedi.Model3D.importJSON = function ( ");
+//	console.log("model3d.js --> jedi.Model3D.importJSON = function ( ");
 	jedi.assert(model, "Invalid Model3D reference!");
 	jedi.assert(modelFileContents, "No file contents provided!");
 	jedi.logComment("Importing JSON model '" + (modelName || "unnamed") + "'...");
@@ -1234,7 +1234,7 @@ jedi.Model3D.importJSON = function (model, modelFileContents, deriveTangents, mo
  * Has multi-mesh model support.
  */
 jedi.Model3D.importOBJ = function (model, modelFileContents, deriveTangents, modelName, storageHint) { // -> bool
-	console.log("model3d.js --> jedi.Model3D.importOBJ = function ");
+//	console.log("model3d.js --> jedi.Model3D.importOBJ = function ");
 			//Curt add
 	if(modelName == "arm"){ console.log("arm in model3d1!"); return false; }
 
@@ -1272,7 +1272,7 @@ jedi.Model3D.importOBJ = function (model, modelFileContents, deriveTangents, mod
 	// Set up a new OBJ object or group instance.
 	//
 	var makeObjObject = function (objs, currObj, line, faceCnt) {
-		console.log("model3d.js --> var makeObjObject = function ( ");
+	//	console.log("model3d.js --> var makeObjObject = function ( ");
 		var existingObject = null;
 		if (line) {
 			var objName = line.substr(1); // Skip 'o', 'g', whatever...

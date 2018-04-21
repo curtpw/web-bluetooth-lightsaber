@@ -206,7 +206,27 @@ class ControllerWebBluetooth {
     	let devicePhotosensor  	= (event.target.value.getUint8(5) * 4);
     	let deviceTouchsensor  	= (event.target.value.getUint8(6) * 4);
 
-        console.log(accelerometerRoll + " " + accelerometerPitch);
+        //adjust angular position to simulate joystick - assume device centered upright as origin position 
+        //allow 60 degree variation
+        var controllerRoll = accelerometerRoll;
+        var controllerPitch = accelerometerPitch;
+
+        /*
+        origin: Pitch 180, Roll 90     pitch-> Y axis, roll-> X axis
+        allowed variation: 120 degrees
+        range  pitch: 240-120   roll: 150-30
+        break points  pitch: 0   roll: 270
+        */
+        if(controllerRoll > 150 && controllerRoll < 270) controllerRoll = 150;
+        if(controllerRoll > 270 && controllerRoll < 0 || controllerRoll > 0 && controllerRoll < 30) controllerRoll = 30;
+
+        if(controllerPitch > 240 && controllerPitch < 360) controllerPitch = 240;
+        if(controllerPitch > 0 && controllerPitch < 120) controllerPitch = 120;
+
+        //convert to x/z width/height percentage values
+        controllerRoll = (controllerRoll - 30) / 120;
+        controllerPitch = (controllerPitch - 120) / 120;
+        console.log("Game Roll:" + controllerRoll + " Game Pitch:" + controllerPitch);
 
         state = {
                 pitch: accelerometerPitch,
@@ -215,7 +235,9 @@ class ControllerWebBluetooth {
                 y: accelerometerY,
                 z: accelerometerZ,
                 photosensor: devicePhotosensor,
-                touch: deviceTouchsensor
+                touch: deviceTouchsensor,
+                controllerX: controllerRoll,
+                controllerY: controllerPitch
 
         }
 

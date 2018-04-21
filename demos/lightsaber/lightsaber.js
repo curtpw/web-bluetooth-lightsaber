@@ -36,7 +36,7 @@
 /*
 ===========================================================
 LightSaberDemo module / singleton:
-===========================================================
+=========================================================== var colorArray = ["Blue", "Green", "Red", "Cyan", "Magenta", "Yellow"];
 */
 var LightSaberDemo = (function () {
 
@@ -50,6 +50,9 @@ var LightSaberDemo = (function () {
 		"Yellow"  : { bladeGlow : [0.7, 0.7, 0.0, 1.0], bladeStd : [1.0, 1.0, 0.9, 1.0], light : [1.0, 1.0, 0.7, 1.0] },
 		"Var"  	  : { bladeGlow : [0.0, 0.0, 0.0, 1.0], bladeStd : [1.0, 1.0, 1.0, 1.0], light : [1.0, 1.0, 1.0, 1.0] }   //Curt add test
 	};
+
+	//for external controller
+	var colorArray = ["Blue", "Green", "Red", "Cyan", "Magenta", "Yellow"];
 
 	// Misc:
 	var initialized           = false;
@@ -85,6 +88,9 @@ var LightSaberDemo = (function () {
 	var bladeGlowColor        = colors["Blue"].bladeGlow;
 	var bladeStdColor         = colors["Blue"].bladeStd;
 	var lightColor            = colors["Blue"].light;
+
+	/****************** CHANGE COLOR WITH BLUETOOTH **********/
+	var controllerButtonPressed  = false;
 
 	// We start rotating the saber by itself after a while without user input.
 	var autoRotate               = true;   // Starts with an auto rotation
@@ -147,14 +153,14 @@ var LightSaberDemo = (function () {
 	}
 
 	function updateMouseDeltas(mx, my) {
-	//	console.log("updateMouseDeltas(mx, my): " + mx + " " + my); //DEBUG TEST
+		console.log("updateMouseDeltas(mx, my): " + mx + " " + my); //DEBUG TEST
 		mouse.deltaX   = mx - mouse.lastPosX;
 		mouse.deltaY   = my - mouse.lastPosY;
 		mouse.lastPosX = mx;
 		mouse.lastPosY = my;
 		mouse.deltaX   = jedi.clamp(mouse.deltaX, -mouse.maxDelta, +mouse.maxDelta);
 		mouse.deltaY   = jedi.clamp(mouse.deltaY, -mouse.maxDelta, +mouse.maxDelta);
-	//	console.log("updateMouseDeltas(mouse.deltaX, mouse.deltaY): " + mouse.deltaX + " " + mouse.deltaY); //DEBUG TEST
+		console.log("updateMouseDeltas(mouse.deltaX, mouse.deltaY): " + mouse.deltaX + " " + mouse.deltaY); //DEBUG TEST
 
 		mouse.lastInputTime = jedi.WebApp.clockMilliseconds();
 
@@ -167,7 +173,7 @@ var LightSaberDemo = (function () {
 	}
 
 	function hookMouseHandlers() {
-		console.log("lightsaber.js --> function hookMouseHandlers() {");
+	//	console.log("lightsaber.js --> function hookMouseHandlers() {");
 		var canvas = document.getElementById("webgl_canvas");
 		if (!canvas) {
 			jedi.logError("Failed to get WebGL canvas element! User input is compromised!");
@@ -193,7 +199,7 @@ var LightSaberDemo = (function () {
 			mouse.buttonDown    = leftButtonDown;
 			mouse.lastInputTime = jedi.WebApp.clockMilliseconds();
 			autoRotate          = false;
-			console.log("DEBUG TEST VALUES: " + app.sensorValues); //DEBUG TEST
+		//	console.log("DEBUG TEST VALUES: " + app.sensorValues); //DEBUG TEST
 		};
 
 		canvas.onmouseup = function (mouseEvent) {
@@ -216,7 +222,7 @@ var LightSaberDemo = (function () {
 	}
 
 	function hookTouchHandlers() {
-		console.log("lightsaber.js --> function hookTouchHandlers() {");
+	//	console.log("lightsaber.js --> function hookTouchHandlers() {");
 		var canvas = document.getElementById("webgl_canvas");
 		if (!canvas) {
 			jedi.logError("Failed to get WebGL canvas element! User input is compromised!");
@@ -254,7 +260,7 @@ var LightSaberDemo = (function () {
 	}
 
 	function hideLoadingAmination() {
-		console.log("lightsaber.js --> function hideLoadingAmination() {");
+	//	console.log("lightsaber.js --> function hideLoadingAmination() {");
 		// Uses jQuery to hide the loading gif.
 		// This assumes the page has an element with id = 'loading_animation'.
 		if (document.getElementById("loading_animation")) {
@@ -263,7 +269,7 @@ var LightSaberDemo = (function () {
 	}
 
 	function initShadersAndEffects() {
-		console.log("lightsaber.js --> function initShadersAndEffects() {");
+	//	console.log("lightsaber.js --> function initShadersAndEffects() {");
 		var screenDims = [];
 		screenDims.push(jedi.Renderer.getScreenWidth());
 		screenDims.push(jedi.Renderer.getScreenHeight());
@@ -292,7 +298,7 @@ var LightSaberDemo = (function () {
 	}
 
 	function initMiscellaneous() {
-		console.log("lightsaber.js --> function initMiscellaneous() {");
+	//	console.log("lightsaber.js --> function initMiscellaneous() {");
 		// The light saber model:
 		lightSaberModel = jedi.ResourceManager.findModel3D("lightsaber");
 
@@ -320,7 +326,7 @@ var LightSaberDemo = (function () {
 	}
 
 	function drawSaberHandle(deltaTimeMillisec, materialOverride) {
-		console.log("lightsaber.js --> function drawSaberHandle(");
+	//	console.log("lightsaber.js --> function drawSaberHandle(");
 		jedi.Renderer.setModelMatrix(modelMatrix);
 		jedi.Renderer.setMvpMatrix(mvpMatrix);
 		lightSaberModel.drawModel(
@@ -378,7 +384,7 @@ var LightSaberDemo = (function () {
 	}
 
 	function drawSaberBlade(passId, materialOverride) {
-		console.log("lightsaber.js --> function drawSaberBlade(passId, materialOverride) {");
+	//	console.log("lightsaber.js --> function drawSaberBlade(passId, materialOverride) {");
 		jedi.Renderer.setModelMatrix(modelMatrix);
 		jedi.Renderer.setMvpMatrix(mvpMatrix);
 		lightSaberModel.drawModel(
@@ -699,6 +705,40 @@ var LightSaberDemo = (function () {
 			mat4.multiply(modelMatrix, mTranslation, modelMatrix);
 			mat4.multiply(mvpMatrix, projectionMatrix, modelMatrix);
 
+
+			/***********************************************************************************************************************************************
+			***************************************************** ADD WEB BLUETOOTH CONTROL ****************************************************************
+			************************************************************************************************************************************************
+			************************************************************************************************************************************************/
+if(state.controllerX){
+	//blade to random color on press
+	if(!controllerButtonPressed &&  state.touch < 300){  //new press
+		var newColor = colorArray[Math.floor(Math.random() * 6)];
+		bladeGlowColor = colors[newColor].bladeGlow;
+		bladeStdColor  = colors[newColor].bladeStd;
+		lightColor     = colors[newColor].light;
+		controllerButtonPressed = true; //only change once
+	} 
+	if(controllerButtonPressed &&  state.touch > 300){ //press release
+		controllerButtonPressed = false;
+	}
+
+
+//	var degreesRotationX      = 5.0;   initial position
+//	var degreesRotationZ      = 25.0;
+degreesRotationX = ((state.controllerX * 120) - 60) + 5;
+degreesRotationZ = ((state.controllerY * 120) - 60) + 25;
+
+if (degreesRotationX >= 360.0) { degreesRotationX = degreesRotationX - 360.0; }
+if (degreesRotationZ >= 360.0) { degreesRotationZ = degreesRotationZ - 360.0; }
+
+if (degreesRotationX < 0.0) { degreesRotationX =  360.0 - degreesRotationX; }
+if (degreesRotationZ < 0.0) { degreesRotationZ =  360.0 - degreesRotationZ; }
+
+if (degreesRotationX >= 360.0) { degreesRotationX = 0.0; }
+if (degreesRotationZ >= 360.0) { degreesRotationZ = 0.0; }
+
+}else{
 			if (mouse.buttonDown) {
 				degreesRotationZ -= mouse.deltaX;
 				degreesRotationX += mouse.deltaY;
@@ -718,7 +758,7 @@ var LightSaberDemo = (function () {
 				if (degreesRotationX >= 360.0) { degreesRotationX = 0.0; }
 				if (degreesRotationZ >= 360.0) { degreesRotationZ = 0.0; }
 			}
-
+}
 		//	console.log("degreesRotationX: " + degreesRotationX + " degreesRotationZ: " + degreesRotationZ); //DEBUG DEBUG
 
 		},

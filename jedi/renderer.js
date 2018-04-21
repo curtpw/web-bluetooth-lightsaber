@@ -64,7 +64,7 @@ jedi.Renderer = (function () {
 	 * Internal helpers:
 	 */
 	function getWebGLErrorStr(errorCode) {
-		console.log("renderer.js --> function getWebGLErrorStr(errorCode) {");
+	//	console.log("renderer.js --> function getWebGLErrorStr(errorCode) {");
 		jedi.assert(gl, "WebGL not initialized!");
 		switch (errorCode) {
 		case gl.OUT_OF_MEMORY                 : return "GL_OUT_OF_MEMORY";
@@ -78,7 +78,7 @@ jedi.Renderer = (function () {
 	}
 
 	function checkWebGLErrors() {
-		console.log("renderer.js --> function checkWebGLErrors() {");
+	//	console.log("renderer.js --> function checkWebGLErrors() {");
 		jedi.assert(gl, "WebGL not initialized!");
 		var errorCode = gl.getError();
 		while (errorCode != gl.NO_ERROR) {
@@ -88,7 +88,7 @@ jedi.Renderer = (function () {
 	}
 
 	function setDefaultWebGLStates() {
-		console.log("renderer.js --> function setDefaultWebGLStates() {");
+	//	console.log("renderer.js --> function setDefaultWebGLStates() {");
 		jedi.assert(gl, "WebGL not initialized!");
 		jedi.assert(screenWidth  > 0);
 		jedi.assert(screenHeight > 0);
@@ -109,7 +109,7 @@ jedi.Renderer = (function () {
 	}
 
 	function create3DContext(canvas, enableMSAA) {
-		console.log("renderer.js --> function create3DContext(canvas, enableMSAA) {");
+	//	console.log("renderer.js --> function create3DContext(canvas, enableMSAA) {");
 		// Portable way to create the WebGL rendering context.
 		// Returns null on failure, context object otherwise.
 		var params = {
@@ -139,7 +139,7 @@ jedi.Renderer = (function () {
 	}
 
 	function initWebGL(webGLCanvasId, screenScales, enableMSAA) {
-		console.log("renderer.js --> function initWebGL(webGLCanvasId, screenScales, enableMSAA) {");
+	//	console.log("renderer.js --> function initWebGL(webGLCanvasId, screenScales, enableMSAA) {");
 		var canvas = document.getElementById(webGLCanvasId);
 		if (!canvas) {
 			jedi.logError("Unable to get the document's canvas element from id '" + webGLCanvasId + "'");
@@ -186,7 +186,7 @@ jedi.Renderer = (function () {
 	 */
 	return {
 		init : function (webGLCanvasId, screenScales, enableMSAA) {
-			console.log("renderer.js --> init : function (webGLCanvasId, screenScales, enableMSAA) {");
+		//	console.log("renderer.js --> init : function (webGLCanvasId, screenScales, enableMSAA) {");
 			if (gl) {
 				jedi.logWarning("Duplicate Renderer initialization!");
 				return true;
@@ -209,7 +209,7 @@ jedi.Renderer = (function () {
 		},
 
 		drawFullScreenQuadrilateral : function () {
-			console.log("renderer.js --> drawFullScreenQuadrilateral : function () {");
+		//	console.log("renderer.js --> drawFullScreenQuadrilateral : function () {");
 			// VBO only created once.
 			if (!screenQuadVbo) {
 				var verts = [
@@ -305,7 +305,7 @@ jedi.Renderer = (function () {
 		},
 
 		getDefaultWebGLTextureFilter : function (wantsMipmaps) {
-			console.log("renderer.js --> getDefaultWebGLTextureFilter : function (wantsMipmaps) {");
+		//	console.log("renderer.js --> getDefaultWebGLTextureFilter : function (wantsMipmaps) {");
 			jedi.assert(gl, "WebGL not initialized!");
 			// TODO: This should be replaced by some configuration parameter.
 			if (wantsMipmaps) {
